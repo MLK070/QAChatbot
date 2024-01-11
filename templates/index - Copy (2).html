@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        #chat-window {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 5px;
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-window"></div>
+    <div id="input-area"></div>
+
+    <script>
+        $(document).ready(function() {
+            var categories = {{ categories | tojson }};
+            categories.forEach(function(category) {
+                $('#input-area').append('<button onclick="selectCategory(\'' + category + '\')">' + category + '</button>');
+            });
+        });
+
+        function selectCategory(category) {
+            $('#chat-window').append('<div class="message">You selected: ' + category + '</div>');
+            $.post('/get_questions', {category: category}, function(questions) {
+                $('#input-area').html('');
+                questions.forEach(function(question) {
+                    $('#input-area').append('<button onclick="selectQuestion(\'' + category + '\', \'' + question + '\')">' + question + '</button>');
+                });
+            });
+        }
+
+        function selectQuestion(category, question) {
+            $('#chat-window').append('<div class="message">You asked: ' + question + '</div>');
+            $.post('/get_answer', {category: category, question: question}, function(answer) {
+                $('#chat-window').append('<div class="message">Answer: ' + answer + '</div>');
+                scrollToBottom();
+            });
+        }
+
+        function scrollToBottom() {
+            var chatWindow = document.getElementById('chat-window');
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    </script>
+</body>
+</html>

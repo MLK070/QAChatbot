@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose a Question</title>
+</head>
+<body>
+    <h1>Questions in {{ category }}</h1>
+    <ul>
+        {% for question in questions %}
+        <li><a href="/answer?category={{ category|urlencode }}&question={{ question|urlencode }}">{{ question }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

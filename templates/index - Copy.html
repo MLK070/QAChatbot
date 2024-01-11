@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Home</title>
+</head>
+<body>
+    <h1>Welcome to the Q&A Chatbot</h1>
+    <form action="/questions">
+        <label for="category">Choose a category:</label>
+        <select name="category" id="category">
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
